@@ -1,0 +1,2 @@
+D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\01-HelloTriangle\build\Debug\GLAD.pdb
+D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\01-HelloTriangle\build\GLAD.dir\Debug\GLAD.pdb

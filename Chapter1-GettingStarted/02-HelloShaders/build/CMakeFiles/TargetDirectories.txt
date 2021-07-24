@@ -1,0 +1,4 @@
+D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/02-HelloShaders/build/CMakeFiles/GLAD.dir
+D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/02-HelloShaders/build/CMakeFiles/HelloShaders.dir
+D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/02-HelloShaders/build/CMakeFiles/ALL_BUILD.dir
+D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/02-HelloShaders/build/CMakeFiles/ZERO_CHECK.dir
