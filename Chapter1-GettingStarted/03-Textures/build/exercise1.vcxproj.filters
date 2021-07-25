@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\03-Textures\src\Textures_exercise1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\03-Textures\src\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\03-Textures\src\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\03-Textures\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\03-Textures\shaders\fragment.frag" />
+    <None Include="D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\03-Textures\shaders\fragment_execise1.frag" />
+    <None Include="D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\03-Textures\shaders\vertex.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{397851D0-1BF9-39F2-A022-7024FBA61DA8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{31DDD688-D648-3F5D-B2AF-C4FA39082776}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

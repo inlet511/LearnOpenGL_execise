@@ -1,0 +1,2 @@
+D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\03-Textures\build\Debug\GLAD.pdb
+D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\03-Textures\build\GLAD.dir\Debug\GLAD.pdb
