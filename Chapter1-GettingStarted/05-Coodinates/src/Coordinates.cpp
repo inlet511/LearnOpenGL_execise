@@ -5,6 +5,10 @@
 #include "Shader.h"
 #include "stb_image.h"
 #include <iostream>
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -37,7 +41,7 @@ int main()
         return -1;
     }
 
-    Shader shader("../shaders/vertex.vert","../shaders/fragment.frag");
+    Shader shader("shaders/vertex.vert","shaders/fragment.frag");
 
     // set up vertex data and buffers
     // -----------------------
@@ -48,6 +52,7 @@ int main()
             -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
             -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
     };
+
 
     unsigned int indices[] ={
         0,1,3,
@@ -70,7 +75,7 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     int width, height, nrChannels;
-    unsigned char* data = stbi_load("../textures/container.jpg", &width, &height, &nrChannels, 0);
+    unsigned char* data = stbi_load("textures/container.jpg", &width, &height, &nrChannels, 0);
     if(data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -92,7 +97,7 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     
-    data = stbi_load("../textures/awesomeface.png", &width, &height, &nrChannels, 0);
+    data = stbi_load("textures/awesomeface.png", &width, &height, &nrChannels, 0);
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -139,6 +144,17 @@ int main()
     glBindVertexArray(0);
 
 
+    /***************Transform Matrices**************/
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -6.0f));
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection = glm::perspective<float>(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 1000.0f);
+    /*-------------Finished Matrices--------------*/
+
 
 
     while(!glfwWindowShouldClose(window))
@@ -157,20 +173,14 @@ int main()
         glBindTexture(GL_TEXTURE_2D, textures[1]);
 
         shader.use();
-		glm::mat4 trans = glm::mat4(1.0f);        
-		trans = glm::translate(trans, glm::vec3(0.2f, -0.2f, 0.0f));
-        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));		
-		shader.setMatrix4("transform", trans);
+		glm::mat4 trans = glm::mat4(1.0f);
+
+		shader.setMatrix4("model",model);
+        shader.setMatrix4("view", view);
+        shader.setMatrix4("projection", projection);
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-        glm::mat4 trans2 = glm::mat4(1.0f);
-        trans2 = glm::translate(trans2, glm::vec3(-0.25, 0.25f, 0.0f));        
-        float scale_by_time = glm::abs(glm::sin(glfwGetTime()));
-        trans2 = glm::scale(trans2, scale_by_time * glm::vec3(2.0f, 2.0f, 2.0f));
-        shader.setMatrix4("transform", trans2);
-
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
