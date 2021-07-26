@@ -1,2 +1,0 @@
-D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\02-HelloShaders\build\Debug\GLAD.pdb
-D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\02-HelloShaders\build\GLAD.dir\Debug\GLAD.pdb

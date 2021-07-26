@@ -1,7 +1,0 @@
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/03-Textures/build/CMakeFiles/exercise2.dir
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/03-Textures/build/CMakeFiles/GLAD.dir
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/03-Textures/build/CMakeFiles/exercise4.dir
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/03-Textures/build/CMakeFiles/Textures.dir
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/03-Textures/build/CMakeFiles/exercise3.dir
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/03-Textures/build/CMakeFiles/ALL_BUILD.dir
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/03-Textures/build/CMakeFiles/ZERO_CHECK.dir

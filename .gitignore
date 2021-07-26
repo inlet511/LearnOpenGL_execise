@@ -29,3 +29,5 @@
 **/.vs/
 **/Intermediate/
 **/Output/
+
+**/build/

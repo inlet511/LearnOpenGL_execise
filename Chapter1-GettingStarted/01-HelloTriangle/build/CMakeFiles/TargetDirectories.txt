@@ -1,7 +1,0 @@
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/01-HelloTriangle/build/CMakeFiles/execise2.dir
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/01-HelloTriangle/build/CMakeFiles/GLAD.dir
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/01-HelloTriangle/build/CMakeFiles/HelloTriangle.dir
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/01-HelloTriangle/build/CMakeFiles/execise1.dir
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/01-HelloTriangle/build/CMakeFiles/execise3.dir
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/01-HelloTriangle/build/CMakeFiles/ALL_BUILD.dir
-D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/01-HelloTriangle/build/CMakeFiles/ZERO_CHECK.dir

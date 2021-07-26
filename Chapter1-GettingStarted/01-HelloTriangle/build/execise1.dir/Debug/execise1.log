@@ -1,4 +1,0 @@
-﻿  Building Custom Rule D:/Dev/workspace/LearnOpenGL/Chapter1-GettingStarted/01-HelloTriangle/CMakeLists.txt
-  HelloTriangle-execise1.cpp
-D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\01-HelloTriangle\src\HelloTriangle-execise1.cpp(1,1): warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
-  execise1.vcxproj -> D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\01-HelloTriangle\build\Debug\execise1.exe

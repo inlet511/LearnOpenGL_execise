@@ -1,3 +1,0 @@
-﻿  HelloShaders.cpp
-D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\02-HelloShaders\src\Shader.h(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  HelloShaders.vcxproj -> D:\Dev\workspace\LearnOpenGL\Chapter1-GettingStarted\02-HelloShaders\build\Debug\HelloShaders.exe
