@@ -9,7 +9,7 @@ find_package(OpenGL REQUIRED)
 add_library(GLAD STATIC "${CMAKE_SOURCE_DIR}/../../ThirdParty/glad/glad.c")
 target_include_directories(GLAD PUBLIC "${CMAKE_SOURCE_DIR}/../../ThirdParty/glad/include")
 
-
+file(GLOB SHADERS ${CMAKE_SOURCE_DIR}/shaders/*)
 # Color
 
 add_executable(Color 

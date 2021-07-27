@@ -70,8 +70,8 @@ public:
 		deltaX *= MouseSensitivity;
 		deltaY *= MouseSensitivity;
 
-		Yaw += deltaX;
-		Pitch -= deltaY;
+		Yaw += (float)deltaX;
+		Pitch -= (float)deltaY;
 
 		if (Pitch > 89.0f)
 			Pitch = 89.0f;
