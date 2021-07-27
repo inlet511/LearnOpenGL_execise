@@ -53,3 +53,52 @@ target_link_libraries(FreeCamera PUBLIC
                                 ${GLFW3_LIBRARY}
                                 ${OPENGL_LIBRARIES}
                                 )
+
+# RotateCamera
+
+add_executable(RotateCamera ${SHADERS} ${CMAKE_SOURCE_DIR}/src/RotateCamera.cpp ${CMAKE_SOURCE_DIR}/src/Shader.h ${CMAKE_SOURCE_DIR}/src/stb_image.h)
+
+set_property(TARGET RotateCamera
+            PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
+            ${CMAKE_SOURCE_DIR})
+
+
+target_include_directories(RotateCamera PUBLIC
+                                ${CMAKE_SOURCE_DIR}/src
+                                ${OPENGL_INCLUDE_DIRS}
+                                ${CMAKE_SOURCE_DIR}/../../ThirdParty/glm
+                                ${GLFW3_INCLUDE_DIR}
+																)
+target_link_libraries(RotateCamera PUBLIC
+                                GLAD
+                                ${GLFW3_LIBRARY}
+                                ${OPENGL_LIBRARIES}
+                                )
+
+
+
+# CameraClassTest
+
+add_executable(CameraClassTest 
+  ${SHADERS} 
+  ${CMAKE_SOURCE_DIR}/src/CameraClassTest.cpp
+  ${CMAKE_SOURCE_DIR}/src/Camera.h
+  ${CMAKE_SOURCE_DIR}/src/Shader.h
+  ${CMAKE_SOURCE_DIR}/src/stb_image.h)
+
+set_property(TARGET CameraClassTest
+            PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
+            ${CMAKE_SOURCE_DIR})
+
+
+target_include_directories(CameraClassTest PUBLIC
+                                ${CMAKE_SOURCE_DIR}/src
+                                ${OPENGL_INCLUDE_DIRS}
+                                ${CMAKE_SOURCE_DIR}/../../ThirdParty/glm
+                                ${GLFW3_INCLUDE_DIR}
+																)
+target_link_libraries(CameraClassTest PUBLIC
+                                GLAD
+                                ${GLFW3_LIBRARY}
+                                ${OPENGL_LIBRARIES}
+                                )
