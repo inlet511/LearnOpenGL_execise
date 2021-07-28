@@ -1,0 +1,13 @@
+#version 330 core
+in vec3 normal;
+in vec3 worldPos;
+
+out vec4 FragColor;
+
+uniform vec3 objectColor;
+uniform vec3 lightColor;
+
+void main() { 
+
+	FragColor = vec4(objectColor*lightColor,1.0);
+};
