@@ -14,20 +14,20 @@ target_include_directories(GLAD PUBLIC "${CMAKE_SOURCE_DIR}/../../ThirdParty/gla
 
 file(GLOB SHADERS ${CMAKE_SOURCE_DIR}/shaders/*)
 
-add_executable(${PROJECT_NAME} ${SHADERS} ${CMAKE_SOURCE_DIR}/src/Coordinates.cpp ${CMAKE_SOURCE_DIR}/src/Shader.h ${CMAKE_SOURCE_DIR}/src/stb_image.h)
+add_executable(Coordinates ${SHADERS} ${CMAKE_SOURCE_DIR}/src/Coordinates.cpp ${CMAKE_SOURCE_DIR}/src/Shader.h ${CMAKE_SOURCE_DIR}/src/stb_image.h)
 
-set_property(TARGET ${PROGRAM_NAME}
+set_property(TARGET Coordinates
             PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
             ${CMAKE_SOURCE_DIR})
 
 
-target_include_directories(${PROJECT_NAME} PUBLIC
+target_include_directories(Coordinates PUBLIC
                                 ${CMAKE_SOURCE_DIR}/src
                                 ${OPENGL_INCLUDE_DIRS}
                                 ${CMAKE_SOURCE_DIR}/../../ThirdParty/glm
                                 ${GLFW3_INCLUDE_DIR}
 																)
-target_link_libraries(${PROJECT_NAME} PUBLIC
+target_link_libraries(Coordinates PUBLIC
                                 GLAD
                                 ${GLFW3_LIBRARY}
                                 ${OPENGL_LIBRARIES}

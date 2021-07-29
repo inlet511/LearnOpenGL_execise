@@ -12,7 +12,9 @@ enum Camera_Movement
 	FORWARD,
 	BACKWARD,
 	LEFT,
-	RIGHT
+	RIGHT,
+	UP,
+	DOWN
 };
 
 class Camera
@@ -97,6 +99,12 @@ public:
 			break;
 		case Camera_Movement::RIGHT:
 			Position += Right * deltaTime * MovementSpeed;
+			break;
+		case Camera_Movement::UP:
+			Position += Up * deltaTime * MovementSpeed;
+			break;
+		case Camera_Movement::DOWN:
+			Position -= Up * deltaTime * MovementSpeed;
 			break;
 		default:
 			break;
