@@ -30,15 +30,15 @@ Camera camera;
 float deltaTime = 0.0f; // 当前帧与上一帧的时间差
 float lastFrame = 0.0f; // 上一帧的时间
 
-glm::vec3 lightPos(2.2f, 2.0f, 2.0f);
+
 glm::vec3 objectPos(0.0f, 0.0f, 0.0f);
 
 
 ImVec4 light_ambient = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
 ImVec4 light_diffuse = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
 ImVec4 light_specular = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-
-float light_direction[3] = { -2.2f,-2.0f,-2.0f };
+float light_position[3] = { -2.2f,-2.0f,-2.0f };
+float light_direction[3] = { 0,0,0 };
 
 ImVec4 material_ambient = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
 ImVec4 material_diffuse = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
@@ -46,6 +46,7 @@ ImVec4 material_specular = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 float  material_shininess = 32.0f;
 
 bool right_mouse_button_down = false;
+float cone_angle = 12.5f;
 
 int main()
 {
@@ -86,7 +87,7 @@ int main()
 	ImGui_ImplOpenGL3_Init("#version 130");
 
 
-	Shader cubeShader("shaders/vertex.vert", "shaders/fragment.frag");
+	Shader cubeShader("shaders/vertex.vert", "shaders/fragment_spot_light.frag");
 	Shader lightShader("shaders/vertex.vert", "shaders/fragment_light.frag");
 
 	// set up vertex data and buffers
@@ -136,7 +137,7 @@ int main()
 	   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 	};
 
-	glm::vec3 positions[] = {
+	glm::vec3 cubePositions[] = {
 		glm::vec3(0.0f,  0.0f,  0.0f),
 		glm::vec3(2.0f,  5.0f, -15.0f),
 		glm::vec3(-1.5f, -2.2f, -2.5f),
@@ -205,7 +206,9 @@ int main()
 			ImGui::ColorEdit3("Light Ambient", (float*)&light_ambient);
 			ImGui::ColorEdit3("Light Diffuse", (float*)&light_diffuse);
 			ImGui::ColorEdit3("Light Specular", (float*)&light_specular);
-			ImGui::InputFloat3("Light Direction", (float*)&light_direction);
+			ImGui::SliderFloat3("Light Position", light_position, -8.0f, 8.0f);
+			ImGui::SliderFloat3("Light Direction", light_direction, -1.0f, 1.0f);
+			ImGui::SliderFloat("Cone Angle", (float*)&cone_angle,2.0f,30.0f);
 			ImGui::EndGroup();
 
 			ImGui::Text("Material Settings");
@@ -219,8 +222,6 @@ int main()
 		processInput(window, deltaTime);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
 
 		// 绘制第一个立方体
 		glBindVertexArray(VAO);
@@ -236,7 +237,12 @@ int main()
 		cubeShader.setVec3("light.ambient", glm::vec3(light_ambient.x, light_ambient.y, light_ambient.z));
 		cubeShader.setVec3("light.diffuse", glm::vec3(light_diffuse.x, light_diffuse.y, light_diffuse.z));
 		cubeShader.setVec3("light.specular", glm::vec3(light_specular.x, light_specular.y, light_specular.z));
+		cubeShader.setVec3("light.position", glm::vec3(light_position[0], light_position[1], light_position[2]));
 		cubeShader.setVec3("light.direction", glm::vec3(light_direction[0], light_direction[1], light_direction[2]));
+		cubeShader.setFloat("light.constant", 1.0f);
+		cubeShader.setFloat("light.linear", 0.09f);
+		cubeShader.setFloat("light.quadratic", 0.032f);
+		cubeShader.setFloat("light.cutoff", glm::cos(glm::radians(cone_angle)));
 
 		cubeShader.setVec3("eyePos", camera.Position);
 
@@ -253,12 +259,14 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, specularMap);
 
-		for (unsigned int i = 0; i < sizeof(positions) / sizeof(glm::vec3); i++)
+		for (unsigned int i = 0; i < sizeof(cubePositions) / sizeof(glm::vec3); i++)
 		{
+			float angle = 20.0f * i;
 			glm::mat4 model = glm::mat4(1.0f);
-			glm::translate(model, positions[i]);
+			model = glm::translate(model, cubePositions[i]);
+			model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5f));
 			cubeShader.setMatrix4("model", model);
-
+			
 			glm::mat3 normalMatrix = glm::transpose(glm::inverse(model));
 			cubeShader.setMatrix3("normalMatrix", normalMatrix);
 
@@ -272,7 +280,7 @@ int main()
 		lightShader.setMatrix4("projection", projection);
 
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, -glm::vec3(light_direction[0], light_direction[1], light_direction[2]));
+		model = glm::translate(model, glm::vec3(light_position[0], light_position[1], light_position[2]));
 		model = glm::scale(model, glm::vec3(0.2f));
 		lightShader.setMatrix4("model", model);
 

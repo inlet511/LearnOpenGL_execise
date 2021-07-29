@@ -13,30 +13,83 @@ file(GLOB SHADERS ${CMAKE_SOURCE_DIR}/shaders/*)
 file(GLOB_RECURSE  IAMGUI ${CMAKE_SOURCE_DIR}/../../ThirdParty/imgui/*.cpp)
 
 
-# LightCasters
-add_executable(LightCasters 
+# DirectionalLight
+add_executable(DirectionalLight 
   ${SHADERS}
   ${IAMGUI}
-  ${CMAKE_SOURCE_DIR}/src/LightCasters.cpp
+  ${CMAKE_SOURCE_DIR}/src/DirectionalLight.cpp
   ${CMAKE_SOURCE_DIR}/src/Camera.h
   ${CMAKE_SOURCE_DIR}/src/Shader.h
   ${CMAKE_SOURCE_DIR}/src/stb_image.h)
 
-set_property(TARGET  LightCasters
+set_property(TARGET  DirectionalLight
             PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
             ${CMAKE_SOURCE_DIR})
 
 
-target_include_directories(LightCasters PUBLIC
+target_include_directories(DirectionalLight PUBLIC
                                 ${CMAKE_SOURCE_DIR}/src
                                 ${OPENGL_INCLUDE_DIRS}
                                 ${CMAKE_SOURCE_DIR}/../../ThirdParty/glm
                                 ${GLFW3_INCLUDE_DIR}
 								${CMAKE_SOURCE_DIR}/../../ThirdParty/imgui
 								)
-target_link_libraries(LightCasters PUBLIC
+target_link_libraries(DirectionalLight PUBLIC
                                 GLAD
                                 ${GLFW3_LIBRARY}
                                 ${OPENGL_LIBRARIES}
                                 )
 
+# PointLight
+add_executable(PointLight 
+  ${SHADERS}
+  ${IAMGUI}
+  ${CMAKE_SOURCE_DIR}/src/PointLight.cpp
+  ${CMAKE_SOURCE_DIR}/src/Camera.h
+  ${CMAKE_SOURCE_DIR}/src/Shader.h
+  ${CMAKE_SOURCE_DIR}/src/stb_image.h)
+
+set_property(TARGET  PointLight
+            PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
+            ${CMAKE_SOURCE_DIR})
+
+
+target_include_directories(PointLight PUBLIC
+                                ${CMAKE_SOURCE_DIR}/src
+                                ${OPENGL_INCLUDE_DIRS}
+                                ${CMAKE_SOURCE_DIR}/../../ThirdParty/glm
+                                ${GLFW3_INCLUDE_DIR}
+								${CMAKE_SOURCE_DIR}/../../ThirdParty/imgui
+								)
+target_link_libraries(PointLight PUBLIC
+                                GLAD
+                                ${GLFW3_LIBRARY}
+                                ${OPENGL_LIBRARIES}
+                                )
+
+# SpotLight
+add_executable(SpotLight 
+  ${SHADERS}
+  ${IAMGUI}
+  ${CMAKE_SOURCE_DIR}/src/SpotLight.cpp
+  ${CMAKE_SOURCE_DIR}/src/Camera.h
+  ${CMAKE_SOURCE_DIR}/src/Shader.h
+  ${CMAKE_SOURCE_DIR}/src/stb_image.h)
+
+set_property(TARGET  SpotLight
+            PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
+            ${CMAKE_SOURCE_DIR})
+
+
+target_include_directories(SpotLight PUBLIC
+                                ${CMAKE_SOURCE_DIR}/src
+                                ${OPENGL_INCLUDE_DIRS}
+                                ${CMAKE_SOURCE_DIR}/../../ThirdParty/glm
+                                ${GLFW3_INCLUDE_DIR}
+								${CMAKE_SOURCE_DIR}/../../ThirdParty/imgui
+								)
+target_link_libraries(SpotLight PUBLIC
+                                GLAD
+                                ${GLFW3_LIBRARY}
+                                ${OPENGL_LIBRARIES}
+                                )

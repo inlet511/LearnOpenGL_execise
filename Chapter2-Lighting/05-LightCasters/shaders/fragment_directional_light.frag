@@ -11,6 +11,7 @@ struct Light{
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+
 };
 
 in vec3 worldPos;
@@ -39,6 +40,8 @@ void main() {
 	vec3 EyeDirection = normalize(eyePos - worldPos);
 	float spec = pow(max(dot(R,EyeDirection),0.0),material.shininess);
 	vec3 specular = light.specular * spec * texture(material.specularMap,uv).rgb;
+
+
 
 	vec3 result = ambient + diffuse + specular;
 
