@@ -8,6 +8,10 @@ struct Material{
 
 struct Light{
 	vec3 position;
+	vec3 direction;
+	float outerCone;
+	float fallOff;
+
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
@@ -33,13 +37,16 @@ void main() {
 
 	vec3 N = normalize(normal);
 	vec3 L = normalize(light.position - worldPos);
+	vec3 SpotDirection = normalize(-light.direction);
 	vec3 R = reflect(-L, N);
+	
+	float theta = dot(SpotDirection,L);
+	
 
 	vec3 ambient = light.ambient * texture(material.diffuseMap, uv).rgb;
 
 	float diff =  max(dot(L,N),0.0) ;
 	vec3 diffuse = light.diffuse * diff * texture(material.diffuseMap, uv).rgb;
-
 	
 	vec3 EyeDirection = normalize(eyePos - worldPos);
 	float spec = pow(max(dot(R,EyeDirection),0.0),material.shininess);
@@ -48,8 +55,14 @@ void main() {
 	float distance = length(worldPos - light.position);
 	float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * distance * distance);
 
+	float epsilon = light.fallOff * attenuation * attenuation;//让距离也参与影响灯光边界的衰减
+	float intensity = clamp((theta - light.outerCone )/epsilon, 0.0,1.0);
 
+	diffuse *= intensity;
+	specular*= intensity;
 	vec3 result = attenuation*(ambient + diffuse + specular);
 
 	FragColor = vec4(result,1.0);
+	
+
 };

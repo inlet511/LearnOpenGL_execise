@@ -93,3 +93,31 @@ target_link_libraries(SpotLight PUBLIC
                                 ${GLFW3_LIBRARY}
                                 ${OPENGL_LIBRARIES}
                                 )
+								
+#SoftEdge_SpotLight
+
+add_executable(SoftEdge_SpotLight 
+  ${SHADERS}
+  ${IAMGUI}
+  ${CMAKE_SOURCE_DIR}/src/SoftEdge_SpotLight.cpp
+  ${CMAKE_SOURCE_DIR}/src/Camera.h
+  ${CMAKE_SOURCE_DIR}/src/Shader.h
+  ${CMAKE_SOURCE_DIR}/src/stb_image.h)
+
+set_property(TARGET  SoftEdge_SpotLight
+            PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
+            ${CMAKE_SOURCE_DIR})
+
+
+target_include_directories(SoftEdge_SpotLight PUBLIC
+                                ${CMAKE_SOURCE_DIR}/src
+                                ${OPENGL_INCLUDE_DIRS}
+                                ${CMAKE_SOURCE_DIR}/../../ThirdParty/glm
+                                ${GLFW3_INCLUDE_DIR}
+								${CMAKE_SOURCE_DIR}/../../ThirdParty/imgui
+								)
+target_link_libraries(SoftEdge_SpotLight PUBLIC
+                                GLAD
+                                ${GLFW3_LIBRARY}
+                                ${OPENGL_LIBRARIES}
+                                )
