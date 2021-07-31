@@ -47,11 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef AI_POSTPROCESS_H_INC
 #define AI_POSTPROCESS_H_INC
 
-#include <assimp/types.h>
-
-#ifdef __GNUC__
-#   pragma GCC system_header
-#endif
+#include "types.h"
 
 #ifdef __cplusplus
 extern "C" {

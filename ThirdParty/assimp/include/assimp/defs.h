@@ -5,6 +5,8 @@ Open Asset Import Library (assimp)
 
 Copyright (c) 2006-2019, assimp team
 
+
+
 All rights reserved.
 
 Redistribution and use of this software in source and binary forms,
@@ -47,10 +49,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #ifndef AI_DEFINES_H_INC
 #define AI_DEFINES_H_INC
-
-#ifdef __GNUC__
-#   pragma GCC system_header
-#endif
 
 #include <assimp/config.h>
 
@@ -293,10 +291,9 @@ static const ai_real ai_epsilon = (ai_real) 0.00001;
 #endif
 
 
-/**
- *  To avoid running out of memory
- *  This can be adjusted for specific use cases
- *  It's NOT a total limit, just a limit for individual allocations
+/* To avoid running out of memory
+ * This can be adjusted for specific use cases
+ * It's NOT a total limit, just a limit for individual allocations
  */
 #define AI_MAX_ALLOC(type) ((256U * 1024 * 1024) / sizeof(type))
 
@@ -309,14 +306,5 @@ static const ai_real ai_epsilon = (ai_real) 0.00001;
 #    define AI_NO_EXCEPT
 #  endif
 #endif // _MSC_VER
-
-/**
- *  Helper macro to set a pointer to NULL in debug builds
- */
-#if (defined ASSIMP_BUILD_DEBUG)
-#   define AI_DEBUG_INVALIDATE_PTR(x) x = NULL;
-#else
-#   define AI_DEBUG_INVALIDATE_PTR(x)
-#endif
 
 #endif // !! AI_DEFINES_H_INC

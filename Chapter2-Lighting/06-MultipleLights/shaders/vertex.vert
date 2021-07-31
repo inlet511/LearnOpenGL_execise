@@ -5,7 +5,7 @@ layout(location = 2) in vec2 aUv;
 
 out vec3 normal;
 out vec3 worldPos;
-out vec2 uv;
+out vec2 texCoords;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -16,5 +16,5 @@ void main() {
   gl_Position = projection * view * model * vec4(aPos, 1.0);
   worldPos = vec3 (model * vec4(aPos,1.0));
   normal = normalMatrix * aNormal;
-  uv = aUv;
+  texCoords = aUv;
 };
