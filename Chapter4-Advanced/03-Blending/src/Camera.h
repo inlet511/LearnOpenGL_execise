@@ -1,18 +1,14 @@
-#pragma once
-#include <glm.hpp>
+#ifndef CAMERA_H
+#define CAMERA_H
+
 #include <glad/glad.h>
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 
 #include <vector>
 
-const float YAW = -90.0f;
-const float PITCH = 0.0f;
-const float SPEED = 5.5f;
-const float SENSITIVITY = 0.1f;
-const float ZOOM = 45.0f;
-
-enum Camera_Movement {
+enum Camera_Movement
+{
 	FORWARD,
 	BACKWARD,
 	LEFT,
@@ -23,121 +19,125 @@ enum Camera_Movement {
 
 class Camera
 {
-
 public:
-
 	glm::vec3 Position;
 	glm::vec3 Front;
 	glm::vec3 Up;
 	glm::vec3 Right;
 	glm::vec3 WorldUp;
 
-	// Euler Angles
 	float Yaw;
 	float Pitch;
 
-	// Camera options
 	float MovementSpeed;
 	float MouseSensitivity;
 	float Zoom;
 
-	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) :
+private:
+	double last_xpos;
+	double last_ypos;
+	double deltaX;
+	double deltaY;
+	bool first_time = true;
+
+public:
+	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f) :
+		Position(position),
+		WorldUp(up),
+		Yaw(yaw),
+		Pitch(pitch),
 		Front(glm::vec3(0.0f, 0.0f, -1.0f)),
-		MovementSpeed(SPEED),
-		MouseSensitivity(SENSITIVITY),
-		Zoom(ZOOM)
+		MovementSpeed(2.5f),
+		MouseSensitivity(0.1f),
+		Zoom(45.0f)
 	{
-		Position = position;
-		WorldUp = up;
-		Yaw = yaw;
-		Pitch = pitch;
 		updateCameraVectors();
 	}
 
-	// Constructor with scalar values
-	Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : 
-		Front(glm::vec3(0.0f, 0.0f, -1.0f)), 
-		MovementSpeed(SPEED), 
-		MouseSensitivity(SENSITIVITY), 
-		Zoom(ZOOM)
+	inline void Initialize(){first_time = true;}
+
+	void OnMouseMove(double xpos, double ypos)
 	{
-		Position = glm::vec3(posX, posY, posZ);
-		WorldUp = glm::vec3(upX, upY, upZ);
-		Yaw = yaw;
-		Pitch = pitch;
-		updateCameraVectors();
-	}
-
-	// Returns the view matrix calculated using Euler Angles and the LookAt Matrix
-	glm::mat4 GetViewMatrix()
-	{
-		return glm::lookAt(Position, Position + Front, Up);
-	}
-
-	// Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
-	void ProcessKeyboard(Camera_Movement direction, float deltaTime)
-	{
-		float velocity = MovementSpeed * deltaTime;
-		if (direction == FORWARD)
-			Position += Front * velocity;
-		if (direction == BACKWARD)
-			Position -= Front * velocity;
-		if (direction == LEFT)
-			Position -= Right * velocity;
-		if (direction == RIGHT)
-			Position += Right * velocity;
-		if (direction == UP)
-			Position += Up * velocity;
-		if (direction == DOWN)
-			Position -= Up * velocity;
-	}
-
-	// Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
-	void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true)
-	{
-		xoffset *= MouseSensitivity;
-		yoffset *= MouseSensitivity;
-
-		Yaw += xoffset;
-		Pitch += yoffset;
-
-		// Make sure that when pitch is out of bounds, screen doesn't get flipped
-		if (constrainPitch)
+		if (first_time)
 		{
-			if (Pitch > 89.0f)
-				Pitch = 89.0f;
-			if (Pitch < -89.0f)
-				Pitch = -89.0f;
+			last_xpos = xpos;
+			last_ypos = ypos;
+			first_time = false;
 		}
 
-		// Update Front, Right and Up Vectors using the updated Euler angles
+		double deltaX = xpos - last_xpos;
+		double deltaY = ypos - last_ypos;
+		last_xpos = xpos;
+		last_ypos = ypos;
+
+		deltaX *= MouseSensitivity;
+		deltaY *= MouseSensitivity;
+
+		Yaw += (float)deltaX;
+		Pitch -= (float)deltaY;
+
+		if (Pitch > 89.0f)
+			Pitch = 89.0f;
+		if (Pitch < -89.0f)
+			Pitch = -89.0f;
+
 		updateCameraVectors();
 	}
 
-	// Processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
-	void ProcessMouseScroll(float yoffset)
+	void OnKeyboard(float deltaTime, Camera_Movement movement)
 	{
-		if (Zoom >= 1.0f && Zoom <= 45.0f)
-			Zoom -= yoffset;
+		switch (movement)
+		{
+		case Camera_Movement::FORWARD:
+			Position += Front * deltaTime * MovementSpeed;
+			break;
+		case Camera_Movement::BACKWARD:
+			Position -= Front * deltaTime * MovementSpeed;
+			break;
+		case Camera_Movement::LEFT:
+			Position -= Right * deltaTime * MovementSpeed;
+			break;
+		case Camera_Movement::RIGHT:
+			Position += Right * deltaTime * MovementSpeed;
+			break;
+		case Camera_Movement::UP:
+			Position += Up * deltaTime * MovementSpeed;
+			break;
+		case Camera_Movement::DOWN:
+			Position -= Up * deltaTime * MovementSpeed;
+			break;
+		default:
+			break;
+		}
+	}
+
+	void OnScroll(double scrollValue)
+	{
+		Zoom -= (float)scrollValue;
 		if (Zoom <= 1.0f)
 			Zoom = 1.0f;
 		if (Zoom >= 45.0f)
 			Zoom = 45.0f;
 	}
 
+	glm::mat4 GetViewMatrix()
+	{
+		return glm::lookAt(Position, Position + Front, Up);
+	}
+
 private:
-	// Calculates the front vector from the Camera's (updated) Euler Angles
 	void updateCameraVectors()
 	{
-		// Calculate the new Front vector
 		glm::vec3 front;
 		front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
 		front.y = sin(glm::radians(Pitch));
 		front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
 		Front = glm::normalize(front);
-		// Also re-calculate the Right and Up vector
-		Right = glm::normalize(glm::cross(Front, WorldUp));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+
+
+		Right = glm::normalize(glm::cross(Front, WorldUp));
 		Up = glm::normalize(glm::cross(Right, Front));
 	}
 };
 
+#endif
