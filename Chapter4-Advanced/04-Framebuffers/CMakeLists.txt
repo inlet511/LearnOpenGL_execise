@@ -51,7 +51,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
  target_link_libraries(${PROJECT_NAME} PUBLIC 
                                     GLAD
                                     ${GLFW3_LIBRARY} 
-                                    ${CMAKE_SOURCE_DIR}/../../ThirdParty/assimp/lib/assimp-vc141-mt.lib 
+                                    ${CMAKE_SOURCE_DIR}/../../ThirdParty/assimp/lib/assimp-vc142-mtd.lib 
                                     ${OPENGL_LIBRARIES}
                                     )
 
@@ -84,7 +84,7 @@ install (TARGETS  ${PROJECT_NAME}
         CONFIGURATIONS Release
         DESTINATION ${PROJECT_NAME}/Release)
         
-set(DLLs ${CMAKE_SOURCE_DIR}/dlls/assimp-vc141-mt.dll)
+set(DLLs ${CMAKE_SOURCE_DIR}/dlls/assimp-vc142-mtd.dll)
 install (PROGRAMS ${DLLs}
         CONFIGURATIONS Debug 
         DESTINATION ${PROJECT_NAME}/Debug
