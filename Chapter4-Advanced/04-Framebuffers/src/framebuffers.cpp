@@ -74,8 +74,8 @@ int main()
 
 	// build and compile shaders
 	// -------------------------
-	Shader shader("Res/Shaders/vert.vs", "Res/Shaders/frag.fs");
-	Shader screenShader("Res/Shaders/screen.vs", "Res/Shaders/screen.fs");
+	Shader shader("Res/Shaders/vert.vert", "Res/Shaders/frag.frag");
+	Shader screenShader("Res/Shaders/screen.vert", "Res/Shaders/core_edge_detection.frag");
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
@@ -232,7 +232,7 @@ int main()
 	{
 		// per-frame time logic
 		// --------------------
-		float currentFrame = glfwGetTime();
+		float currentFrame = (float)glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
@@ -241,8 +241,9 @@ int main()
 		processInput(window);
 
 		
-		// render
+		//绑定到我们创建的FrameBuffer，开始正常的绘制，绘制内容会自动写入到framebuffer的Color Attachement和Render Buffer中
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
 		glEnable(GL_DEPTH_TEST);
 
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -275,15 +276,19 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glBindVertexArray(0);
 
-		// now bind back to default framebuffer and draw a quad plane with the attached framebuffer color texture
+		// 绘制完毕，切换回正常的Frame Buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
-		// clear all relevant buffers
+		// 禁用深度测试，使得最后的quad覆盖全屏幕
+		glDisable(GL_DEPTH_TEST);
+		// clear
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		// 绘制覆盖全屏幕的quad
 		screenShader.use();
 		glBindVertexArray(quadVAO);
+
+		// texture就使用之前绑定到自定义framebuffer的纹理附件
 		glBindTexture(GL_TEXTURE_2D, texColorBuffer);	// use the color attachment texture as the texture of the quad plane
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -340,16 +345,16 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	if (firstMouse)
 	{
-		lastX = xpos;
-		lastY = ypos;
+		lastX = (float)xpos;
+		lastY = (float)ypos;
 		firstMouse = false;
 	}
 
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+	float xoffset = (float)xpos - lastX;
+	float yoffset = lastY - (float)ypos; // reversed since y-coordinates go from bottom to top
 
-	lastX = xpos;
-	lastY = ypos;
+	lastX = (float)xpos;
+	lastY = (float)ypos;
 
 	camera.ProcessMouseMovement(xoffset, yoffset);
 }
