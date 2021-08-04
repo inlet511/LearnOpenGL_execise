@@ -44,12 +44,12 @@ bool right_mouse_button_down = false;
 
 vector<std::string> cubemap_paths
 {
-	"Res/Images/Lycksele/px.jpg",
-	"Res/Images/Lycksele/nx.jpg",
-	"Res/Images/Lycksele/py.jpg",
-	"Res/Images/Lycksele/ny.jpg",
-	"Res/Images/Lycksele/pz.jpg",
-	"Res/Images/Lycksele/nz.jpg",
+	"Res/Images/Lycksele2/px.jpg",
+	"Res/Images/Lycksele2/nx.jpg",
+	"Res/Images/Lycksele2/py.jpg",
+	"Res/Images/Lycksele2/ny.jpg",
+	"Res/Images/Lycksele2/pz.jpg",
+	"Res/Images/Lycksele2/nz.jpg",
 };
 
 float skyboxVertices[] = {
@@ -139,8 +139,7 @@ int main()
 	// -------------------------
 	Shader shader("Res/Shaders/vert.vert", "Res/Shaders/frag.frag");
 	Shader skyboxshader("Res/Shaders/skybox.vert", "Res/Shaders/skybox.frag");
-	Shader reflectshader("Res/Shaders/reflect.vert", "Res/Shaders/reflect.frag");
-	Shader refractionshader("Res/Shaders/refraction.vert", "Res/Shaders/refraction.frag");
+	Shader exerciseShader("Res/Shaders/exercise1.vert", "Res/Shaders/exercise1.frag");
 
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
@@ -262,10 +261,11 @@ int main()
 	skyboxshader.use();
 	skyboxshader.setInt("skybox", 0);
 
-	reflectshader.use();
-	reflectshader.setInt("skybox", 0);
+	exerciseShader.use();	
+	exerciseShader.setInt("skybox", 4);
 
-	string modelPath("../../models/nanosuit/nanosuit.obj");
+
+	string modelPath("../../models/nanosuit_relfection/nanosuit.obj");
 	Model ourModel(modelPath);
 
 	// render loop
@@ -290,40 +290,21 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 model = glm::mat4(1.0f);
 
-		// draw cubes
-		reflectshader.use();
-		reflectshader.setMatrix4("projection", projection);
-		reflectshader.setMatrix4("view", view);
-		reflectshader.setVec3("camPos", camera.Position);
-		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
-		reflectshader.setMatrix4("model", model);
-
-		// cube1
-		glBindVertexArray(cubeVAO);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		// cube2
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-		reflectshader.setMatrix4("model", model);
-
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
+		// Draw Model
+		
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0, 0, 0));
-		model = glm::scale(model, glm::vec3(0.1f));
-		reflectshader.setMatrix4("model", model);
-		ourModel.Draw(reflectshader);
+		model = glm::scale(model, glm::vec3(0.25f));
+		exerciseShader.use();
+		exerciseShader.setMatrix4("model", model);
+		exerciseShader.setMatrix4("view", view);
+		exerciseShader.setMatrix4("projection", projection);
+		exerciseShader.setVec3("camPos", camera.Position);
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 
-		refractionshader.use();
-		refractionshader.setMatrix4("projection", projection);
-		refractionshader.setMatrix4("view", view);
-		refractionshader.setVec3("camPos", camera.Position);
-		model = glm::translate(model, glm::vec3(10.0f, 0.0f, 0.0f));
-		refractionshader.setMatrix4("model", model);
-		ourModel.Draw(refractionshader);
+		ourModel.Draw(exerciseShader);
+
 
 		// draw floor
 		shader.use();
@@ -350,9 +331,6 @@ int main()
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
-
-
-
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

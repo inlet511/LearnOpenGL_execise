@@ -9,8 +9,9 @@ uniform vec3 camPos;
 
 void main()
 {   
-    vec3 I = worldPos - camPos;
-    vec3 R = reflect(I, normalize(normal));
-    FragColor = texture(skybox,R);
+    float ratio = 1.00 / 1.52;
+    vec3 I = normalize(worldPos - camPos);
+    vec3 R = refract(I, normalize(normal), ratio);
+    FragColor = vec4(texture(skybox,R).rgb,1.0);
 
 }

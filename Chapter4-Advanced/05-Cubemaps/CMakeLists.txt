@@ -14,7 +14,7 @@ target_include_directories(GLAD PUBLIC "${CMAKE_SOURCE_DIR}/../../ThirdParty/gla
 
 file(GLOB SHADERS ${CMAKE_SOURCE_DIR}/Res/shaders/*)
 
-
+###############################################################################################################	
  #添加可执行目标(主exe)
 add_executable(CubeMaps ${SHADERS}
 				${CMAKE_SOURCE_DIR}/src/Cubemaps.cpp
@@ -47,7 +47,7 @@ target_include_directories(CubeMaps PUBLIC
                                     ${OPENGL_LIBRARIES}
                                     )
 
-
+###############################################################################################################	
  # Reflection
 add_executable(Reflection  ${SHADERS}
 				${CMAKE_SOURCE_DIR}/src/Reflection.cpp
@@ -80,7 +80,7 @@ target_include_directories(Reflection PUBLIC
                                     ${OPENGL_LIBRARIES}
                                     )
 									
-									
+###############################################################################################################				
  # Refraction
 add_executable(Refraction  ${SHADERS}
 				${CMAKE_SOURCE_DIR}/src/Refraction.cpp
@@ -112,8 +112,40 @@ target_include_directories(Refraction PUBLIC
                                     ${CMAKE_SOURCE_DIR}/../../ThirdParty/assimp/lib/assimp-vc142-mtd.lib 
                                     ${OPENGL_LIBRARIES}
                                     )
-									
+###############################################################################################################					
+# Exercise1
+add_executable(Exercise1  ${SHADERS}
+				${CMAKE_SOURCE_DIR}/src/Exercise1.cpp
+				${CMAKE_SOURCE_DIR}/src/Camera.h
+				${CMAKE_SOURCE_DIR}/src/Mesh.h
+				${CMAKE_SOURCE_DIR}/src/Model.h
+				${CMAKE_SOURCE_DIR}/src/Shader.h
+)
+
+# Set working directory
+set_property(TARGET Exercise1
+            PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
+			${CMAKE_SOURCE_DIR}
+            )
+
+#给主exe文件增加include
+target_include_directories(Exercise1 PUBLIC 
+                                    ${CMAKE_SOURCE_DIR}/src
+                                    ${OPENGL_INCLUDE_DIRS}
+                                    ${CMAKE_SOURCE_DIR}/../../ThirdParty/assimp/include
+                                    ${CMAKE_SOURCE_DIR}/../../ThirdParty/glm
+                                    ${GLFW3_INCLUDE_DIR}
+                                    )
+
+#给主exe文件增加库文件
+ target_link_libraries(Exercise1 PUBLIC 
+                                    GLAD
+                                    ${GLFW3_LIBRARY} 
+                                    ${CMAKE_SOURCE_DIR}/../../ThirdParty/assimp/lib/assimp-vc142-mtd.lib 
+                                    ${OPENGL_LIBRARIES}
+                                    )
+###############################################################################################################										
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} 
 			PROPERTY VS_STARTUP_PROJECT 
-			Refraction)
+			Exercise1)
 
