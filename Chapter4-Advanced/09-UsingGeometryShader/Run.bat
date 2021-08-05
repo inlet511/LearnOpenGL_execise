@@ -1,1 +1,0 @@
-for /f  %%i in ('dir /s /b %~dp0build\Win64\Debug\*.exe') do start %%i
