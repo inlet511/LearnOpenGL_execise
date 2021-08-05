@@ -51,29 +51,18 @@ int main()
 
 
 	// build and compile shaders
-	// -------------------------
-	Shader shader1("Res/Shaders/vert.vert", "Res/Shaders/frag.frag","Res/Shaders/geo.geom");
 
+	Shader shader("Res/Shaders/model.vert", "Res/Shaders/model.frag");
+	Shader normalShader("Res/Shaders/shownormal.vert", "Res/Shaders/shownormal.frag","Res/Shaders/shownormal.geom");
 
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
-	float cubeVertices[] = {
-		-0.5, 0.5,
-		0.5, 0.5,
-		0.5, -0.5,
-		-0.5, -0.5
-	};
+	
+	Model model("../../models/nanosuit/nanosuit.obj");
 
-	// cube VAO VBO
-	unsigned int cubeVAO, cubeVBO;
-	glGenVertexArrays(1, &cubeVAO);
-	glGenBuffers(1, &cubeVBO);
-	glBindVertexArray(cubeVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	normalShader.use();
+	normalShader.setMatrix4("projection", projection);
+	shader.use();
+	shader.setMatrix4("projection", projection);
 
 	// render loop
 	while (!glfwWindowShouldClose(window))
@@ -91,20 +80,26 @@ int main()
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
+		glm::mat4 view = camera.GetViewMatrix();
+		glm::mat4 model_matrix = glm::mat4(1.0f);
+		model_matrix = glm::scale(model_matrix, glm::vec3(0.1f));
 
-		// cubes
-		glBindVertexArray(cubeVAO);
+		// 正常绘制
+		shader.use();
+		shader.setMatrix4("view", view);
+		shader.setMatrix4("model", model_matrix);
+		model.Draw(shader);
 
-		shader1.use();
-		glDrawArrays(GL_POINTS, 0, 4);
-		glBindVertexArray(0);
+		// 绘制法线
+		normalShader.use();		
+		normalShader.setMatrix4("view", view);
+		normalShader.setMatrix4("model", model_matrix);
+		model.Draw(normalShader);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
-	glDeleteVertexArrays(1, &cubeVAO);
-	glDeleteBuffers(1, &cubeVBO);
 
 
 	glfwTerminate();
@@ -141,6 +136,7 @@ int InitializeEnvi()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
 
 	return 0;
 }
@@ -165,7 +161,6 @@ void processInput(GLFWwindow* window)
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-
 	glViewport(0, 0, width, height);
 }
 

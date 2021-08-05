@@ -52,28 +52,13 @@ int main()
 
 	// build and compile shaders
 	// -------------------------
-	Shader shader1("Res/Shaders/vert.vert", "Res/Shaders/frag.frag","Res/Shaders/geo.geom");
+	Shader shader1("Res/Shaders/explode.vert", "Res/Shaders/explode.frag","Res/Shaders/explode.geom");
+	
+	Model model("../../models/nanosuit/nanosuit.obj");
 
-
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
-	float cubeVertices[] = {
-		-0.5, 0.5,
-		0.5, 0.5,
-		0.5, -0.5,
-		-0.5, -0.5
-	};
-
-	// cube VAO VBO
-	unsigned int cubeVAO, cubeVBO;
-	glGenVertexArrays(1, &cubeVAO);
-	glGenBuffers(1, &cubeVBO);
-	glBindVertexArray(cubeVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-
+	glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	shader1.use();
+	shader1.setMatrix4("projection", projection);
 
 	// render loop
 	while (!glfwWindowShouldClose(window))
@@ -90,21 +75,21 @@ int main()
 
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-
-		// cubes
-		glBindVertexArray(cubeVAO);
-
 		shader1.use();
-		glDrawArrays(GL_POINTS, 0, 4);
-		glBindVertexArray(0);
+
+		
+		glm::mat4 view = camera.GetViewMatrix();
+		shader1.setMatrix4("view", view);
+		shader1.setFloat("time", (float)glfwGetTime());
+		glm::mat4 model_matrix = glm::mat4(1.0f);
+		model_matrix = glm::scale(model_matrix, glm::vec3(0.1f));
+		shader1.setMatrix4("model", model_matrix);
+		model.Draw(shader1);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
-	glDeleteVertexArrays(1, &cubeVAO);
-	glDeleteBuffers(1, &cubeVBO);
 
 
 	glfwTerminate();
@@ -141,6 +126,7 @@ int InitializeEnvi()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
 
 	return 0;
 }
@@ -165,7 +151,6 @@ void processInput(GLFWwindow* window)
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-
 	glViewport(0, 0, width, height);
 }
 

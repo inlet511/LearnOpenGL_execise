@@ -52,16 +52,16 @@ int main()
 
 	// build and compile shaders
 	// -------------------------
-	Shader shader1("Res/Shaders/vert.vert", "Res/Shaders/frag.frag","Res/Shaders/geo.geom");
+	Shader shader1("Res/Shaders/house.vert", "Res/Shaders/house.frag","Res/Shaders/house.geom");
 
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float cubeVertices[] = {
-		-0.5, 0.5,
-		0.5, 0.5,
-		0.5, -0.5,
-		-0.5, -0.5
+		-0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		 0.5f, -0.5f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  1.0f,  1.0f,  0.0f
 	};
 
 	// cube VAO VBO
@@ -72,7 +72,9 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2*sizeof(float)));
 
 
 	// render loop
