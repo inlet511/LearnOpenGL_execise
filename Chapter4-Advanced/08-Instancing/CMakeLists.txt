@@ -7,7 +7,7 @@ find_package(OpenGL REQUIRED)
 
 add_library(Assimp SHARED IMPORTED)
 set_property(TARGET Assimp PROPERTY IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/../../ThirdParty/assimp/bin/assimp-vc142-mtd.dll)
-set_property(TARGET Assimp PROPERTY IMPORTED_IMPLIB ${CMAKE_SOURCE_DIR}/../../ThirdParty/assimp/bin/assimp-vc142-mtd.lib)
+set_property(TARGET Assimp PROPERTY IMPORTED_IMPLIB ${CMAKE_SOURCE_DIR}/../../ThirdParty/assimp/lib/assimp-vc142-mtd.lib)
 
 # add GLAD
 add_library(GLAD STATIC "${CMAKE_SOURCE_DIR}/../../ThirdParty/glad/glad.c")
@@ -52,8 +52,78 @@ target_link_libraries(Instancing1 PUBLIC
                                 ${GLFW3_LIBRARY}
                                 ${OPENGL_LIBRARIES}
 								Assimp
-                                )							
+                                )		
 
+########################################################################
+# Instanced_array
+add_executable(Instanced_array 
+  ${SHADERS}
+  ${IAMGUI}
+  ${CMAKE_SOURCE_DIR}/src/Instanced_array.cpp
+  ${CMAKE_SOURCE_DIR}/src/Camera.h
+  ${CMAKE_SOURCE_DIR}/src/Mesh.h
+  ${CMAKE_SOURCE_DIR}/src/Model.h
+  ${CMAKE_SOURCE_DIR}/src/Shader.h
+  ${CMAKE_SOURCE_DIR}/src/stb_loader.cpp
+  )
+
+set_property(TARGET  Instanced_array
+            PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
+            ${CMAKE_SOURCE_DIR})
+
+
+target_include_directories(Instanced_array PUBLIC
+                                ${CMAKE_SOURCE_DIR}/src
+                                ${OPENGL_INCLUDE_DIRS}
+								${GLFW3_INCLUDE_DIR}
+                                ${CMAKE_SOURCE_DIR}/../../ThirdParty/glm                                
+								${CMAKE_SOURCE_DIR}/../../ThirdParty/imgui
+								${CMAKE_SOURCE_DIR}/../../ThirdParty/assimp/include
+								)
+
+target_link_libraries(Instanced_array PUBLIC
+                                GLAD
+                                ${GLFW3_LIBRARY}
+                                ${OPENGL_LIBRARIES}
+								Assimp
+                                )										
+
+
+########################################################################
+# AsteroidField
+add_executable(AsteroidField 
+  ${SHADERS}
+  ${IAMGUI}
+  ${CMAKE_SOURCE_DIR}/src/AsteroidField.cpp
+  ${CMAKE_SOURCE_DIR}/src/Camera.h
+  ${CMAKE_SOURCE_DIR}/src/Mesh.h
+  ${CMAKE_SOURCE_DIR}/src/Model.h
+  ${CMAKE_SOURCE_DIR}/src/Shader.h
+  ${CMAKE_SOURCE_DIR}/src/stb_loader.cpp
+  )
+
+set_property(TARGET  AsteroidField
+            PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
+            ${CMAKE_SOURCE_DIR})
+
+
+target_include_directories(AsteroidField PUBLIC
+                                ${CMAKE_SOURCE_DIR}/src
+                                ${OPENGL_INCLUDE_DIRS}
+								${GLFW3_INCLUDE_DIR}
+                                ${CMAKE_SOURCE_DIR}/../../ThirdParty/glm                                
+								${CMAKE_SOURCE_DIR}/../../ThirdParty/imgui
+								${CMAKE_SOURCE_DIR}/../../ThirdParty/assimp/include
+								)
+
+target_link_libraries(AsteroidField PUBLIC
+                                GLAD
+                                ${GLFW3_LIBRARY}
+                                ${OPENGL_LIBRARIES}
+								Assimp
+                                )
+								
+								
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} 
 			PROPERTY VS_STARTUP_PROJECT 
-			Instancing1)
+			AsteroidField)

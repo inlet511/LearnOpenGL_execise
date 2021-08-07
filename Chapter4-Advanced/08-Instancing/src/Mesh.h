@@ -35,9 +35,9 @@ public:
 	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures);
 	void Draw(Shader shader);
 
-private:
-	unsigned int VAO, VBO, EBO;
 
+	unsigned int VAO, VBO, EBO;
+private:
 	void setupMesh();
 };
 

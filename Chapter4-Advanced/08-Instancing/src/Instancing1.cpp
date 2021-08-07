@@ -128,8 +128,6 @@ int main()
     glEnableVertexAttribArray(1);
     glBindVertexArray(0);
 
-
-
     // load textures
     unsigned int marble_texture = loadTexture("textures/Marble_Color.jpg");
 
@@ -165,8 +163,16 @@ int main()
        
         ourShader.use();
 
+        for (unsigned int i = 0; i < 100; i++)
+        {
+            stringstream ss;
+            string index;
+            ss << i;
+            index = ss.str();
+            ourShader.setVec3(("offsets[" + index + "]").c_str(), translations[i]);
+        }
 
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 10.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         ourShader.setMatrix4("projection", projection);
         ourShader.setMatrix4("view", view);
